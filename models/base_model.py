@@ -19,16 +19,28 @@ class BaseModel:
         """Initiaizing the base class
 
         args:
-            id (str): unique id for each object created
-            created_at (datetime): time when object was created
+            args (): a variable length of arguments args is not used though
+            kwargs these are key word argumensts
+        attributes
+            id (sr): a unique identify for objects
+            created_at: time when object was created
             updated_at (datetime): time when object was updated
         """
-        self.id = str(uuid.uuid4())
-        self.updated_at = datetime.now()
-        self.created_at = datetime.now()
+        if kwargs:
+            for key, value in kwargs.items():
+                if key != "__class__":
+                    if key == "created_at":
+                        self.created_at = datetime.strptime(kwargs["created_at"],
+                                                            '%Y-%m-%dT%H:%M:%S.%f')
+                    elif key == "updated_at":
+                        self.updated_at = datetime.strptime(kwargs["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
+                    else:
+                        setattr(self, key, value)
 
-        for key, value in kwargs.items():
-            setattr(self, key, value)
+        else:
+            self.id = str(uuid.uuid4())
+            self.updated_at = datetime.now()
+            self.created_at = datetime.now()
 
     def save(self):
         """This function updates time when object is modified"""
