@@ -2,6 +2,7 @@
 """importing modules"""
 import uuid
 from datetime import datetime
+from models import storage
 
 
 """This module defines a class called BaseModel"""
@@ -41,10 +42,13 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.updated_at = datetime.now()
             self.created_at = datetime.now()
+            storage.new(self)
 
     def save(self):
         """This function updates time when object is modified"""
         self.updated_at = datetime.now()
+        storage.new(self)
+        storage.save()
 
     def to_dict(self):
         """Function returning dictionary representation of object
