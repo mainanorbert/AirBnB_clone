@@ -48,5 +48,4 @@ class FileStorage:
                 for obj in obj_dict.values():
                     cls_name = obj["__class__"]
                     del obj["__class__"]
-                    print(cls_name)
                     self.new(eval(cls_name)(**obj))
