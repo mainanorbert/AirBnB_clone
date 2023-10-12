@@ -2,7 +2,6 @@
 """importing modules"""
 import uuid
 from datetime import datetime
-from models import storage
 
 
 """This module defines a class called BaseModel"""
@@ -31,10 +30,13 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key != "__class__":
                     if key == "created_at":
-                        self.created_at = datetime.strptime(kwargs["created_at"],
-                                                            '%Y-%m-%dT%H:%M:%S.%f')
+                        self.created_at = datetime.strptime(
+                                kwargs["created_at"], '%Y-%m-%dT%H:%M:%S.%f'
+                                )
                     elif key == "updated_at":
-                        self.updated_at = datetime.strptime(kwargs["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
+                        self.updated_at = datetime.strptime(
+                                kwargs["updated_at"], "%Y-%m-%dT%H:%M:%S.%f"
+                                )
                     else:
                         setattr(self, key, value)
 
@@ -42,12 +44,14 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.updated_at = datetime.now()
             self.created_at = datetime.now()
+            from models import storage
             storage.new(self)
 
     def save(self):
         """This function updates time when object is modified"""
         self.updated_at = datetime.now()
-        storage.new(self)
+        # storage.new(self)
+        from models import storage
         storage.save()
 
     def to_dict(self):
