@@ -98,6 +98,27 @@ class HBNBCommand(cmd.Cmd):
         """updates instance based on id
         Usage: update <class name> <id> <attribute name> "<attribute value>"""
         args = split_arg(arg)
+        if len(args) == 0:
+            print("** class name missing **")
+        elif args[0] != "BaseModel":
+            print("** class doesn't exist **")
+        elif len(args) < 2:
+            print("** instance id missing **")
+        elif f"{args[0]}.{args[1]}" not in storage.all().keys():
+            print("** no instance found **")
+        elif len(args) < 3:
+            print("** attribute name missing **")
+        elif len(args) < 4:
+            print("** value missing **")
+        else:
+            key = f"{args[0]}.{args[1]}"
+            obj_dict = storage.all()[key]
+            if args[2] in obj_dict.__class__.__dict__.keys():
+                value_type = type(obj_dict.__class__.__dict__[args[2]])
+                obj_dict.__dict__[args[2]] = value_type(args[3])
+            else:
+                obj_dict.__dict__[args[2]] = args[3]
+            storage.save()
 
 
 if __name__ == "__main__":
