@@ -50,11 +50,13 @@ class Test_BaseModel(unittest.TestCase):
 
     def test_documentation(self):
         """ testing for for documentation """
-        self.assertTrue(len(BaseModel.__doc__) >= 20, "Short or no documentation")
+        self.assertTrue(len(BaseModel.__doc__) >= 20,
+                        "Short or no documentation")
         self.assertTrue(len(BaseModel.save.__doc__) >= 20, "Short doc")
         self.assertTrue(len(BaseModel.to_dict.__doc__) >= 20, "Short doc")
         self.assertTrue(len(BaseModel.__str__.__doc__) >= 20, "Short doc")
         self.assertTrue(len(BaseModel.__init__.__doc__) >= 20, "Short doc")
+
     def test_updates_as(self):
         base4 = BaseModel()
         var1 = base4.updated_at
@@ -63,7 +65,9 @@ class Test_BaseModel(unittest.TestCase):
         var2 = base4.updated_at
         self.assertNotEqual(var1, var2)
 
+
 class TestBaseModel_save_method(unittest.TestCase):
+
     def test_save_updates_file(self):
         bm = BaseModel()
         bm.save()
@@ -74,4 +78,3 @@ class TestBaseModel_save_method(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
