@@ -1,9 +1,5 @@
 #!/usr/bin/python3
 """Defines unittests for models/user.py.
-Unittest classes:
-    TestUser_instantiation
-    TestUser_save
-    TestUser_to_dict
 """
 import os
 import models
@@ -13,7 +9,7 @@ from time import sleep
 from models.user import User
 
 class TestUser_instantiation(unittest.TestCase):
-    """Unittests for testing instantiation of the User class."""
+    """Testing instantiation of the User class."""
 
     def test_no_args_instantiates(self):
         self.assertEqual(User, type(User()))
@@ -30,17 +26,17 @@ class TestUser_instantiation(unittest.TestCase):
     def test_email_is_public_str(self):
         self.assertEqual(str, type(User.email))
 
-    def test_password_is_public_str(self):
+    def test_password_public_str(self):
         user = User()
         self.assertEqual(str, type(user.password))
 
     def test_first_name_is_public_str(self):
         self.assertEqual(str, type(User.first_name))
 
-    def test_last_name_is_public_str(self):
+    def test_last_name_is_str(self):
         self.assertEqual(str, type(User.last_name))
 
-    def test_two_users_unique_ids(self):
+    def test_users_unique_ids(self):
         us1 = User()
         us2 = User()
         self.assertNotEqual(us1.id, us2.id)
@@ -148,17 +144,17 @@ class TestUser_to_dict(unittest.TestCase):
         self.assertEqual(str, type(us_dict["updated_at"]))
 
     def test_to_dict_output(self):
-        dt = datetime.today()
-        us = User()
-        us.id = "123456"
-        us.created_at = us.updated_at = dt
+        d = datetime.today()
+        u = User()
+        u.id = "123456"
+        u.created_at = u.updated_at = d
         tdict = {
             'id': '123456',
             '__class__': 'User',
-            'created_at': dt.isoformat(),
-            'updated_at': dt.isoformat(),
+            'created_at': d.isoformat(),
+            'updated_at': d.isoformat(),
         }
-        self.assertDictEqual(us.to_dict(), tdict)
+        self.assertDictEqual(u.to_dict(), tdict)
 
     def test_contrast_to_dict_dunder_dict(self):
         us = User()
