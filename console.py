@@ -4,6 +4,14 @@ import cmd
 import re
 from models import storage
 from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+# importinng abstract syntax tree
+import ast
 
 
 def split_arg(command_args):
@@ -16,8 +24,20 @@ def split_arg(command_args):
 
 
 class HBNBCommand(cmd.Cmd):
-    """class that implements entry point for cmd interpreter"""
-    cmd_prompt = "(hbnb)"
+    """class that implements entry point for cmd interpreter
+    Args:
+    cmd_prompt (str): display for user
+    my_classes"""
+    prompt = "(hbnb) "
+    __my_classes = {
+            "BaseModel",
+            "User",
+            "State",
+            "City",
+            "Amenity",
+            "Place",
+            "Review",
+            }
 
     def do_quit(self, arg):
         """Quits this program by typing 'quit + ENTER'"""
@@ -25,6 +45,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, args):
         """implementing ctrl+ D end of file"""
+        print()
         return True
 
     def emptyline(self):
@@ -37,7 +58,7 @@ class HBNBCommand(cmd.Cmd):
         args = split_arg(arg)
         if len(arg) == 0:
             print("** class name missing **")
-        elif args[0] != "BaseModel":
+        elif args[0] not in HBNBCommand.__my_classes:
             print("** class doesn't exist **")
         else:
             print(eval(args[0])().id)
@@ -49,7 +70,7 @@ class HBNBCommand(cmd.Cmd):
         args = split_arg(arg)
         if len(args) == 0:
             print("** class name missing **")
-        elif args[0] != "BaseModel":
+        elif args[0] not in HBNBCommand.__my_classes:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
@@ -67,7 +88,7 @@ class HBNBCommand(cmd.Cmd):
         args = split_arg(arg)
         if len(args) == 0:
             print("** class name missing **")
-        elif args[0] != "BaseModel":
+        elif args[0] not in HBNBCommand.__my_classes:
             print("** class doesn't exist ** ")
         elif len(args) == 1:
             print("** instance id missing **")
@@ -83,16 +104,18 @@ class HBNBCommand(cmd.Cmd):
         """prints all str rep of instances in list form
         Usage: all or all <class name>"""
         args = split_arg(arg)
-        if len(args) != 0 and args[0] != "BaseModel":
+        my_objs = []
+        if len(args) == 0:
+            for obj in storage.all().values():
+                my_objs.append(obj.__str__())
+                print(my_objs)
+        elif len(args) != 0 and args[0] not in HBNBCommand.__my_classes:
             print("** class doesn't exist **")
         else:
-            my_objs = []
-            for objs in storage.all().values():
-                if len(args) > 0 and args[0] == "BaseModel":
-                    my_objs.append(objs.__str__())
-                else:
-                    my_objs.append(objs.__str__())
-            print(my_objs)
+            for k, v in storage.all().items():
+                if k.startswith(args[0]):
+                    my_objs.append(v.__str__())
+                    print(my_objs)
 
     def do_update(self, arg):
         """updates instance based on id
@@ -100,7 +123,7 @@ class HBNBCommand(cmd.Cmd):
         args = split_arg(arg)
         if len(args) == 0:
             print("** class name missing **")
-        elif args[0] != "BaseModel":
+        elif args[0] not in HBNBCommand.__my_classes:
             print("** class doesn't exist **")
         elif len(args) < 2:
             print("** instance id missing **")
@@ -112,14 +135,19 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
         else:
             key = f"{args[0]}.{args[1]}"
-            obj_dict = storage.all()[key]
-            if args[2] in obj_dict.__class__.__dict__.keys():
-                value_type = type(obj_dict.__class__.__dict__[args[2]])
-                obj_dict.__dict__[args[2]] = value_type(args[3])
+            obj = storage.all()[key]
+            print(f"obj: {obj.__dict__}")
+            # if args[2] in obj.__class__.__dict__.keys():
+            if hasattr(obj, args[2]):
+                # print(x)
+                value_type = type(getattr(obj, args[2]))
+                # value_type= type(obj_dict.__class__.__dict__[args[2]])
+                # setattr(obj, args[2], ast.literal_eval(args[3]))
+                obj.__dict__[args[2]] = value_type(args[3])
             else:
-                obj_dict.__dict__[args[2]] = args[3]
+                # obj.__dict__[args[2]] = args[3]
+                setattr(obj, args[2], args[3])
             storage.save()
-
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
