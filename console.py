@@ -136,14 +136,12 @@ class HBNBCommand(cmd.Cmd):
         else:
             key = f"{args[0]}.{args[1]}"
             obj = storage.all()[key]
-            print(f"obj: {obj.__dict__}")
             # if args[2] in obj.__class__.__dict__.keys():
             if hasattr(obj, args[2]):
-                # print(x)
                 value_type = type(getattr(obj, args[2]))
-                # value_type= type(obj_dict.__class__.__dict__[args[2]])
-                # setattr(obj, args[2], ast.literal_eval(args[3]))
-                obj.__dict__[args[2]] = value_type(args[3])
+                # value_type= type(obj.__class__.__dict__[args[2]])
+                setattr(obj, args[2], ast.literal_eval(args[3]))
+                # obj.__dict__[args[2]] = ast.literal_eval(args[3].strip())
             else:
                 # obj.__dict__[args[2]] = args[3]
                 setattr(obj, args[2], args[3])
