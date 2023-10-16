@@ -156,6 +156,12 @@ class HBNBCommand(cmd.Cmd):
         elif len(args) > 1:
             if args[1] == "all()":
                 self.do_all(args[0])
+            elif args[1] == "count()":
+                no_of_objs = 0
+                for k, v in storage.all().items():
+                    if k.startswith(args[0]):
+                        no_of_objs += 1
+                print(no_of_objs)
 
 
 if __name__ == "__main__":
