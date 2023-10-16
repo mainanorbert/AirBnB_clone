@@ -147,6 +147,16 @@ class HBNBCommand(cmd.Cmd):
                 setattr(obj, args[2], args[3])
             storage.save()
 
+    def default(self, arg):
+        """retrieving number of objsc of class
+        Usage <class>.count()"""
+        args = arg.split('.')
+        if len(args) == 1:
+            print("unknown")
+        elif len(args) > 1:
+            if args[1] == "all()":
+                self.do_all(args[0])
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
