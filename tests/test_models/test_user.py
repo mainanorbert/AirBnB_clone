@@ -8,8 +8,8 @@ from datetime import datetime
 from time import sleep
 from models.user import User
 
+
 class TestUser_instantiation(unittest.TestCase):
-    """Testing instantiation of the User class."""
 
     def test_no_args_instantiates(self):
         self.assertEqual(User, type(User()))

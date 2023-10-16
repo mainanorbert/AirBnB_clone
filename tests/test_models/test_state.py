@@ -63,5 +63,6 @@ class TestState(unittest.TestCase):
     def test_created_at_is_public_datetime(self):
         self.assertEqual(datetime, type(State().created_at))
 
+
 if __name__ == "__main__":
     unittest.main()
