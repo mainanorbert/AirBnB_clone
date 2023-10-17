@@ -136,16 +136,11 @@ class HBNBCommand(cmd.Cmd):
         else:
             key = f"{args[0]}.{args[1]}"
             obj = storage.all()[key]
-            # if args[2] in obj.__class__.__dict__.keys():
-            if hasattr(obj, args[2]):
-                value_type = type(getattr(obj, args[2]))
-                # value_type= type(obj.__class__.__dict__[args[2]])
-                setattr(obj, args[2], ast.literal_eval(args[3]))
-                # obj.__dict__[args[2]] = ast.literal_eval(args[3].strip())
-            else:
-                # obj.__dict__[args[2]] = args[3]
+            try:
                 setattr(obj, args[2], args[3])
-            storage.save()
+                storage.save()
+            except ValueError:
+                pass
 
     def default(self, arg):
         """retrieving number of objsc of class
