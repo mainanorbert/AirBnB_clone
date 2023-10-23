@@ -7,7 +7,7 @@
     display: flex;
     justify-content: space-between;
    align-items: center;
-   padding: 4px;
+   /* padding: 4px; */
 
 }
 .filters button{
@@ -30,8 +30,9 @@
     border-right: 1px solid #DDDDDD;
     line-height: 100%;
     text-align: left;
-    padding-left: 8px;
-    /* position: relative; */
+    /* padding-left: 8px; */
+    /* background: #000; */
+    position: relative;
 
 }
 .locations h3{
@@ -48,11 +49,13 @@
 .amenities{
 
      height: 100%;
-    width: 50%;
+    width: 30%;
+    left: -75px;
     border-right: 1px solid #DDDDDD;
     line-height: 100%;
     text-align: left;
     padding-left: 8px;
+    position: relative;
 }
 .amenities h3{
     font-weight: 600px;
@@ -70,7 +73,11 @@
     border-radius: 4px;
     display: none;
     /* z-index: -1; */
-    /* position: absolute; */
+    position: absolute;
+    /* background: green; */
+    /* color: white; */
+    top: 50px;
+    width: 100%;
 }
 .locations:hover .popover{
     display: block;
@@ -80,4 +87,11 @@
 }
 ul{
     list-style: none;
+}
+.my_locations{
+    /* background: green; */
+    padding-left: 8px;
+}
+.my_locations h4{
+    font-size: 12px;
 }
